@@ -9,9 +9,11 @@ if(isset($_SESSION['user']) != ""){
   exit;
 }
 
-// if(isset($_SESSION['user']) != "" || isset($_SESSION['admin']) != ""){
+// if(isset($_SESSION['user']) != ""){
 //   header('Location: home.php');
 //   exit;
+// } else if(isset($_SESSION['admin']) != ""){
+//   header('Location: homeAdmin.php');
 // }
 
 $error = false;
@@ -44,46 +46,44 @@ if(isset($_POST['btn-login'])){
 
 
   //in case of no error, login procedure
+  // if(!$error){
+  //   $password = hash('sha256', $passw);
+
+  //   $query = mysqli_query($conn, "SELECT * FROM users WHERE email = '$email'");
+  //   $row = mysqli_fetch_array($query, MYSQLI_ASSOC);
+  //   $count = mysqli_num_rows($query);
+
+  //   if($count == 1 && $row['passw'] == $password){
+  //     $_SESSION['user'] = $row['user_id'];
+  //     header("Location: home.php");
+  //   } else {
+  //     $errMSG = "Incorrect Credentials, Please try again...";
+  //   }
+  // }
+
+  // alternative login procedure for different roles
   if(!$error){
     $password = hash('sha256', $passw);
-    // $user = 'user';
-    // $admin = 'admin';
+    $user = 'user';
+    $admin = 'admin';
 
     $query = mysqli_query($conn, "SELECT * FROM users WHERE email = '$email'");
     $row = mysqli_fetch_array($query, MYSQLI_ASSOC);
     $count = mysqli_num_rows($query);
 
     if($count == 1 && $row['passw'] == $password){
-      $_SESSION['user'] = $row['user_id'];
-      header("Location: home.php");
+      if($row['role'] == $admin){
+        $_SESSION['admin'] = $row['user_id'];
+        header("Location: homeAdmin.php");
+      } else {
+        $_SESSION['user'] = $row['user_id'];
+        header("Location: home.php");
+      }        
     } else {
       $errMSG = "Incorrect Credentials, Please try again...";
     }
   }
-
-  //alternative login procedure for different roles
-  // if(!$error){
-  //   $password = hash('sha256', $passw);
-  //   $user = 'user';
-  //   $admin = 'admin';
-
-  //   $query = mysqli_query($conn, "SELECT user_id, name, email, passw, role FROM users WHERE email = '$email'");
-  //   $row = mysqli_fetch_array($query, MYSQLI_ASSOC);
-  //   $count = mysqli_num_rows($query);
-
-  //   if($count == 1 && $row['passw'] == $password && $row['role'] == $user){
-  //     $_SESSION['user'] = $row['user_id'];
-  //     header("Location: home.php");
-  //   } elseif($count == 1 && $row['passw'] == $password && $row['role'] == $admin) {
-  //     $_SESSION['admin'] = $row['user_id'];
-  //     header("Location: home.php");
-  //   } else {
-  //     $errMSG = "Incorrect Credentials, Please try again...";
-  //   }
-  // }
 }
-
-
 
 ?>
 <!DOCTYPE html>
@@ -119,7 +119,7 @@ if(isset($_POST['btn-login'])){
          </div>
 
 
-         <nav class="navbar navbar-expand-md">
+         <!-- <nav class="navbar navbar-expand-md">
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -135,7 +135,7 @@ if(isset($_POST['btn-login'])){
                         <a class="nav-link" href="update.php">Update</a>
                     </li>
             </div>
-        </nav>
+        </nav> -->
          
       </header><!-- /header -->
       

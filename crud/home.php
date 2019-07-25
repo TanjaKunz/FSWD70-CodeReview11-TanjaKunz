@@ -68,13 +68,16 @@ if ($_GET['id']) {
                         <a class="nav-link" href="home.php">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="create.php">Create</a>
+                        <a class="nav-link" href="places.php">Places</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="update.php">Update</a>
+                        <a class="nav-link" href="concert.php">Concert</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="restaurants.php">Restaurants</a>
                     </li>
                     <li>
-                      <a class="nav-link" href="logout.php?logout">Logout</a>
+                      <a class="nav-link" href="actions/a_logout.php?logout">Logout</a>
                     </li>
             </div>
         </nav>
@@ -90,10 +93,14 @@ if ($_GET['id']) {
           
 
           <?php
-           $sql = "SELECT locations.name, locations.description, locations.image, locations.loc_type, address.address, address.ZIP, address.city, address.state FROM locations 
-            INNER JOIN address ON locations.address = address.address_id";
-           // $sql .= ", INNER JOIN restaurants ON locations.loc_id = restaurants.loc_id,";
-           // $sql .= "INNER JOIN rest_type ON restaurants.rest_type = rest_type.rest_type_id"
+           $sql = "SELECT locations.name, locations.description, locations.image, locations.loc_type, locations.loc_type, address.address, address.ZIP, address.city, address.state, restaurants.phone, restaurants.web, rest_type.rest_type, places.web, place_type.place_type, concerts.price, concerts.con_date, concerts.con_time, concerts.web FROM locations 
+            LEFT JOIN address ON locations.address = address.address_id
+            LEFT JOIN restaurants ON locations.loc_id = restaurants.loc_id
+            LEFT JOIN rest_type ON restaurants.rest_type = rest_type.rest_type_id
+            LEFT JOIN places ON locations.loc_id = places.loc_id
+            LEFT JOIN place_type ON places.place_type = place_type.place_type_id
+            LEFT JOIN concerts ON locations.loc_id = concerts.loc_id
+            ORDER BY locations.loc_type";
 
            $result = $conn->query($sql);
 
@@ -146,6 +153,7 @@ if ($_GET['id']) {
                   <div class='col-12 p-0 h4 title'>" .$row['name']. "</div>
 
                   <hr class='col-12 my-0 px-0 py-1 hr'>
+                  <p class='col-12 m-0 px-0 pb-2 tel'>" .$row['con_date']. " " .$row['con_time']. "</p>
 
                   <p class='col-12 m-0 p-0 street'>" .$row['address']. "</p>
                   <p class='col-12 m-0 p-0 city'>" .$row['ZIP']." ".$row['city']. "</p>

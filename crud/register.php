@@ -115,10 +115,16 @@ $passw = htmlspecialchars($passw);
                         <a class="nav-link" href="home.php">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="create.php">Create</a>
+                        <a class="nav-link" href="places.php">Places</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="update.php">Update</a>
+                        <a class="nav-link" href="concert.php">Concert</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="restaurants.php">Restaurants</a>
+                    </li>
+                    <li>
+                      <a class="nav-link" href="actions/a_logout.php?logout">Logout</a>
                     </li>
                 </ul>
         	</div>

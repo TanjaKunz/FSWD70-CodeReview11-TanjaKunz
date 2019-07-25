@@ -7,8 +7,8 @@ require_once 'actions/db_connect.php';
 // if(!isset($_SESSION['user']) || !isset($_SESSION['admin'])) {
 //  header("Location: login.php");
 //  exit;
-// } elseif (isset($_SESSION['user'])){
-//   header("Location: home.php");
+// } elseif (isset($_SESSION['admin'])){
+//   header("Location: restAdmin.php");
 //   exit;
 // }
 
@@ -93,14 +93,10 @@ if ($_GET['id']) {
           
 
           <?php
-           $sql = "SELECT locations.loc_id, locations.name, locations.description, locations.image, locations.loc_type, locations.loc_type, address.address, address.ZIP, address.city, address.state, restaurants.phone, restaurants.web, rest_type.rest_type, places.web, place_type.place_type, concerts.price, concerts.con_date, concerts.con_time, concerts.web FROM locations 
-            LEFT JOIN address ON locations.address = address.address_id
-            LEFT JOIN restaurants ON locations.loc_id = restaurants.loc_id
-            LEFT JOIN rest_type ON restaurants.rest_type = rest_type.rest_type_id
-            LEFT JOIN places ON locations.loc_id = places.loc_id
-            LEFT JOIN place_type ON places.place_type = place_type.place_type_id
-            LEFT JOIN concerts ON locations.loc_id = concerts.loc_id
-            ORDER BY locations.loc_type";
+           $sql = "SELECT locations.name, locations.description, locations.image, locations.loc_type, locations.loc_type, address.address, address.ZIP, address.city, address.state, restaurants.phone, restaurants.web, rest_type.rest_type FROM locations 
+            INNER JOIN address ON locations.address = address.address_id
+            INNER JOIN restaurants ON locations.loc_id = restaurants.loc_id
+            INNER JOIN rest_type ON restaurants.rest_type = rest_type.rest_type_id";
 
            $result = $conn->query($sql);
 
@@ -108,8 +104,8 @@ if ($_GET['id']) {
               while($row = $result->fetch_assoc()) {
                 // variants of display depending on loc_type
                 if($row['loc_type'] == 2){
-                  echo "<div class='col-lg-3 col-md-6 col-sm-12 py-3 h5 d-flex flex-wrap box'>                  
-                  <span class='d-none' name='".$row['loc_id']."'>".$row['loc_id']."</span>
+                  echo "<div class='col-lg-3 col-md-6 col-sm-12 py-3 h5 d-flex flex-wrap box'>
+                  <span  name='".$row['loc_id']."'>".$row['loc_id']."</span>
                   <div class='col-lg-12 col-md-6 mb-3 p-0 d-none d-lg-block d-md-block img'>
                   <img class='img-fluid' src='img/".$row['image']."' alt='".$row['name']."''>
                   </div>
@@ -122,14 +118,10 @@ if ($_GET['id']) {
                   <p class='col-12 m-0 p-0 street'>" .$row['address']. "</p>
                   <p class='col-12 m-0 p-0 city'>" .$row['ZIP']." ".$row['city']. "</p>
                   </div>
-                  <div class='mt-3'>
-                  <a href='update.php?id=" .$row['loc_id']."'><button type= 'button' class='btn btn-outline-secondary edit'>Edit</button></a>
-                  <a href='delete.php?id=" .$row['loc_id']."'><button type='button' class='btn btn-secondary delete'>Delete</button></a>                    
-                  </div>
                   </div>" ;
                 } elseif ($row['loc_type'] == 3){
                   echo "<div class='col-lg-3 col-md-6 col-sm-12 py-3 h5 d-flex flex-wrap box'>
-                  <span class='d-none' name='".$row['loc_id']."'>".$row['loc_id']."</span>
+                  <span  name='".$row['loc_id']."'>".$row['loc_id']."</span>
                   <div class='col-lg-12 col-md-6 mb-3 p-0 d-none d-lg-block d-md-block img'>
                   <img class='img-fluid' src='img/".$row['image']."' alt='".$row['name']."''>
                   </div>
@@ -145,14 +137,10 @@ if ($_GET['id']) {
                   <p class='col-12 m-0 pt-2 px-0 tel'>Tel: ".$row['phone']."</p>
                   <p class='col-12 m-0 p-0 web'><a href='".$row['web']."'>Homepage</a></p>
                   </div>
-                  <div  class='mt-3'>
-                  <a href='update.php?id=" .$row['loc_id']."'><button type= 'button' class='btn btn-outline-secondary edit'>Edit</button></a>
-                  <a href='delete.php?id=" .$row['loc_id']."'><button type='button' class='btn btn-secondary delete'>Delete</button></a>                    
-                  </div>
                   </div>" ;
                 } else {
                   echo "<div class='col-lg-3 col-md-6 col-sm-12 py-3 h5 d-flex flex-wrap box'>
-                  <span class='d-none' name='".$row['loc_id']."'>".$row['loc_id']."</span>
+                  <span  name='".$row['loc_id']."'>".$row['loc_id']."</span>
                   <div class='col-lg-12 col-md-6 mb-3 p-0 d-none d-lg-block d-md-block img'>
                   <img class='img-fluid' src='img/".$row['image']."' alt='".$row['name']."''>
                   </div>
@@ -168,13 +156,9 @@ if ($_GET['id']) {
                   
                   <p class='col-12 m-0 p-0 web'><a href='".$row['web']."'>Homepage</a></p>
                   </div>
-                  <div  class='mt-3'>
-                  <a href='update.php?id=" .$row['loc_id']."'><button type= 'button' class='btn btn-outline-secondary edit'>Edit</button></a>
-                  <a href='delete.php?id=" .$row['loc_id']."'><button type='button' class='btn btn-secondary delete'>Delete</button></a>                    
-                  </div>
                   </div>" ;
                 }
-              }             
+              }              
           } else {
                echo  "<tr><td colspan='5'><center>No Data Avaliable</center></td></tr>";
           }

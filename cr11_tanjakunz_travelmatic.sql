@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 20, 2019 at 04:54 PM
+-- Generation Time: Jul 25, 2019 at 06:17 AM
 -- Server version: 10.3.16-MariaDB
 -- PHP Version: 7.3.6
 
@@ -32,7 +32,7 @@ CREATE TABLE `address` (
   `address_id` int(8) NOT NULL,
   `address` varchar(50) NOT NULL,
   `city` varchar(30) NOT NULL,
-  `ZIP` int(6) DEFAULT NULL,
+  `ZIP` varchar(8) DEFAULT NULL,
   `state` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -41,11 +41,17 @@ CREATE TABLE `address` (
 --
 
 INSERT INTO `address` (`address_id`, `address`, `city`, `ZIP`, `state`) VALUES
-(1, 'Maxingstrasse 13b', 'Vienna', 1130, 'Austria'),
-(2, 'Josefsplatz 1', 'Vienna', 1010, 'Austria'),
-(3, 'Prinz Eugen-Strasse 2/2', 'Vienna', 1040, 'Austria'),
-(4, 'Rennweg 8', 'Vienna', 1040, 'Austria'),
-(5, 'Michaelerplatz 1', 'Vienna', 1010, 'Austria');
+(1, 'Maxingstrasse 13b', 'Vienna', '1130', 'Austria'),
+(2, 'Josefsplatz 1', 'Vienna', '1010', 'Austria'),
+(3, 'Prinz Eugen-Strasse 2/2', 'Vienna', '1040', 'Austria'),
+(4, 'Rennweg 8', 'Vienna', '1040', 'Austria'),
+(5, 'Michaelerplatz 1', 'Vienna', '1010', 'Austria'),
+(6, 'Haymarket', 'London', 'SW1Y 4QL', 'England'),
+(7, 'Tower Hill', 'London', 'EC3N 4AB', 'England'),
+(8, 'Kew Richmond', 'London', 'TW9 3AE', 'England'),
+(9, '15 Bury Street', 'London', 'SW1Y 6AL', 'England'),
+(10, 'Meiereistraße 7', 'Vienna', '1020', 'Austria'),
+(11, 'Roland-Rainer-Platz 1', 'Vienna', '1150', 'Austria');
 
 -- --------------------------------------------------------
 
@@ -67,7 +73,10 @@ CREATE TABLE `concerts` (
 --
 
 INSERT INTO `concerts` (`con_id`, `price`, `con_date`, `con_time`, `web`, `loc_id`) VALUES
-(1, 53, '2019-06-21', '19:00:00', 'https://www.srs.at/en/tickets-events/a-tribute-to-vienna-with-boyschoir-2019/', 5);
+(1, 53, '2019-06-21', '19:00:00', 'https://www.srs.at/en/tickets-events/a-tribute-to-vienna-with-boyschoir-2019/', 5),
+(2, 31, '2017-06-15', '19:00:00', 'https://uk.thephantomoftheopera.com/', 6),
+(3, 45, '2018-08-07', '18:00:00', '', 10),
+(4, 60, '2017-11-09', '20:00:00', 'https://www.vienna.at/queen-und-adam-lambert-brachten-die-stadthalle-zum-brodeln/5545202', 11);
 
 -- --------------------------------------------------------
 
@@ -93,7 +102,13 @@ INSERT INTO `locations` (`loc_id`, `name`, `description`, `image`, `loc_type`, `
 (2, 'Austrian National Library', 'Austrian´s largest library and central memory institution.', 'library.jpg', 2, 1),
 (3, 'Zhany', 'Nice little restaurant near the ', 'zhany.jpg', 3, 3),
 (4, 'Salm Braeu', 'Welcome in the amazing world of on the premises brewed delicious beers, brewed according old receipies,the love for homestyle cuisine and on the premises destilled brands, made from our beers.Welcome at the most historical site with an 450 years history.W', 'salm.jpg', 3, 4),
-(5, 'A Tribute To Vienna', 'A TRIBUTE TO VIENNA provides a special opportunity to experience the\r\nSpanish Riding School and the Vienna Boys’ Choir together in the baroque ambience of the Winter Riding School.', 'hofreitschule01.png', 1, 5);
+(5, 'A Tribute To Vienna', 'A TRIBUTE TO VIENNA provides a special opportunity to experience the\r\nSpanish Riding School and the Vienna Boys’ Choir together in the baroque ambience of the Winter Riding School.', 'hofreitschule01.png', 1, 5),
+(6, 'Tower of London', 'A 900-year history as a royal palace, prison and place of execution, arsenal, jewel house and zoo.', 'tower.jpg', 2, 7),
+(7, 'Kew Gardens', 'London´s largest UNESCO World Heritage Site, is the perfect escape from the hustle and bustle of the city. Home to the world´s most diverse collection of living plants and a scientific research centre of international renown.', 'kew.jpg', 2, 8),
+(8, 'Ginza Onodera', 'Experience Ochakai - a traditional Japanese tea ceremony, at Ginza Onodera´s afternoon tea in association with Tsujiri, a Japanese tea house with more than 150 years of history behind them.', 'ginza.jpg', 3, 9),
+(9, 'The Phantom of the Opera', 'The London show tells the story of a mysterious phantom who terrorises the Paris Opera in an effort to make his protege, Christine, the leading lady of the opera house.', 'phantom.jpg', 1, 6),
+(10, 'Ed Sheeran Concert', 'Concert in Ernst-Happel-Stadion', 'sheeran.jpg', 1, 10),
+(11, 'Queen Concert', 'Queen with Adam Lambert in Vienna City Hall', 'queen.jpg', 1, 11);
 
 -- --------------------------------------------------------
 
@@ -134,7 +149,9 @@ CREATE TABLE `places` (
 
 INSERT INTO `places` (`place_id`, `web`, `loc_id`, `place_type`) VALUES
 (1, 'https://www.zoovienna.at/', 1, 1),
-(2, 'https://www.onb.ac.at/', 2, 9);
+(2, 'https://www.onb.ac.at/', 2, 9),
+(5, 'http://www.hrp.org.uk', 7, 5),
+(6, 'http://www.kew.org', 8, 2);
 
 -- --------------------------------------------------------
 
@@ -187,7 +204,8 @@ CREATE TABLE `restaurants` (
 
 INSERT INTO `restaurants` (`rest_id`, `phone`, `web`, `loc_id`, `rest_type`) VALUES
 (1, 5041525, 'http://zhany.at/', 3, 3),
-(2, 7995992, 'https://www.salmbraeu.com/home/', 4, 12);
+(2, 7995992, 'https://www.salmbraeu.com/home/', 4, 12),
+(3, 2078391, 'https://www.ginzaonodera.uk/reservation/', 9, 8);
 
 -- --------------------------------------------------------
 
@@ -229,7 +247,7 @@ CREATE TABLE `users` (
   `user_id` int(6) NOT NULL,
   `name` varchar(20) NOT NULL,
   `email` varchar(30) NOT NULL,
-  `passw` varchar(20) NOT NULL,
+  `passw` varchar(255) NOT NULL,
   `role` varchar(10) NOT NULL DEFAULT 'user'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -243,7 +261,8 @@ INSERT INTO `users` (`user_id`, `name`, `email`, `passw`, `role`) VALUES
 (3, 'John', 'john@test.com', 'cf80cd8aed482d5d1527', 'user'),
 (4, 'Marie', 'marie@test.com', 'cf80cd8aed482d5d1527', 'user'),
 (5, 'Tom', 'tom@test.com', 'cf80cd8aed482d5d1527', 'user'),
-(6, 'James', 'james@test.com', 'cf80cd8aed482d5d1527', 'user');
+(6, 'James', 'james@test.com', 'cf80cd8aed482d5d1527', 'user'),
+(7, 'Admin', 'admin@test.com', 'cf80cd8aed482d5d1527d7dc72fceff84e6326592848447d2dc0b0e87dfc9a90', 'admin');
 
 --
 -- Indexes for dumped tables
@@ -318,19 +337,19 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `address`
 --
 ALTER TABLE `address`
-  MODIFY `address_id` int(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `address_id` int(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `concerts`
 --
 ALTER TABLE `concerts`
-  MODIFY `con_id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `con_id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `locations`
 --
 ALTER TABLE `locations`
-  MODIFY `loc_id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `loc_id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `loc_types`
@@ -342,7 +361,7 @@ ALTER TABLE `loc_types`
 -- AUTO_INCREMENT for table `places`
 --
 ALTER TABLE `places`
-  MODIFY `place_id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `place_id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `place_type`
@@ -354,7 +373,7 @@ ALTER TABLE `place_type`
 -- AUTO_INCREMENT for table `restaurants`
 --
 ALTER TABLE `restaurants`
-  MODIFY `rest_id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `rest_id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `rest_type`
@@ -366,7 +385,7 @@ ALTER TABLE `rest_type`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `user_id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- Constraints for dumped tables

@@ -2,6 +2,11 @@
 
 require_once 'actions/db_connect.php';
 
+if(isset($_SESSION['user']) != ""){
+  header('Location: home.php');
+  exit;
+}
+
 if ($_GET['id']) {
    $id = $_GET['id'];
 

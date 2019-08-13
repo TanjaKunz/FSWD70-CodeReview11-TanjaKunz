@@ -4,13 +4,10 @@ session_start();
 
 require_once 'actions/db_connect.php';
 
-// if(!isset($_SESSION['user']) || !isset($_SESSION['admin'])) {
-//  header("Location: login.php");
-//  exit;
-// } elseif (isset($_SESSION['admin'])){
-//   header("Location: restAdmin.php");
-//   exit;
-// }
+if(!isset($_SESSION['user']) && !isset($_SESSION['admin'])) {
+ header("Location: login.php");
+ exit;
+}
 
 $query = mysqli_query($conn, "SELECT * FROM users WHERE user_id =".$_SESSION['user']);
 $user = mysqli_fetch_array($query, MYSQLI_ASSOC);
@@ -71,10 +68,13 @@ if ($_GET['id']) {
                         <a class="nav-link" href="places.php">Places</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="concert.php">Concert</a>
+                        <a class="nav-link" href="event.php">Event</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="restaurants.php">Restaurants</a>
+                        <a class="nav-link" href="restaurant.php">Restaurants</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="user.php">Update User</a>
                     </li>
                     <li>
                       <a class="nav-link" href="actions/a_logout.php?logout">Logout</a>
@@ -93,9 +93,9 @@ if ($_GET['id']) {
           
 
           <?php
-           $sql = "SELECT locations.name, locations.description, locations.image, locations.loc_type, locations.loc_type, address.address, address.ZIP, address.city, address.state, places.web, place_type.place_type FROM locations
+           $sql = "SELECT locations.name, locations.description, locations.image, locations.loc_type, locations.loc_type, address.address, address.ZIP, address.city, address.state, places.web, place_type.place_type FROM places
+            INNER JOIN locations ON locations.loc_id = places.loc_id
             INNER JOIN address ON locations.address = address.address_id
-            INNER JOIN places ON locations.loc_id = places.loc_id
             INNER JOIN place_type ON places.place_type = place_type.place_type_id";
 
            $result = $conn->query($sql);

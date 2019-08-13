@@ -4,17 +4,19 @@ session_start();
 
 require_once 'actions/db_connect.php';
 
+// if(isset($_SESSION['user']) != ""){
+//   header('Location: home.php');
+//   exit;
+// }
+
 if(isset($_SESSION['user']) != ""){
   header('Location: home.php');
   exit;
 }
-
-// if(isset($_SESSION['user']) != ""){
-//   header('Location: home.php');
-//   exit;
-// } else if(isset($_SESSION['admin']) != ""){
-//   header('Location: homeAdmin.php');
-// }
+if(isset($_SESSION['admin']) != ""){
+  header('Location: homeAdmin.php');
+  exit;
+}
 
 $error = false;
 

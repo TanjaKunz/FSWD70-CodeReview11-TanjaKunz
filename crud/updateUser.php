@@ -2,11 +2,13 @@
 
 require_once 'actions/db_connect.php';
 
-// if(!isset($_SESSION['user']) || !isset($_SESSION['admin'])) {
+// if(!isset($_SESSION['user']) && !isset($_SESSION['admin'])) {
 //  header("Location: login.php");
 //  exit;
-// } elseif (isset($_SESSION['user'])){
-//   header("Location: home.php");
+// }
+
+// if (isset($_SESSION['user'])){
+//   header("Location: user.php");
 //   exit;
 // }
 
@@ -81,10 +83,16 @@ if ($_GET['id']) {
                         <a class="nav-link" href="places.php">Places</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="concert.php">Concert</a>
+                        <a class="nav-link" href="event.php">Event</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="restaurants.php">Restaurants</a>
+                        <a class="nav-link" href="restaurant.php">Restaurants</a>
+                    </li>
+                     <li class="nav-item">
+                        <a class="nav-link" href="adminPanel.php">Panel</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="user.php">Update User</a>
                     </li>
                     <li>
                       <a class="nav-link" href="actions/a_logout.php?logout">Logout</a>
@@ -104,6 +112,9 @@ if ($_GET['id']) {
 
         <label>Email</label>
         <input type="text" name="email" class="form-control" placeholder="Email" maxlength="50" value="<?php echo $data['email'] ?>" autofocus>
+
+        <label>Password</label>
+        <input type="text" name="passw" class="form-control" placeholder="Password" maxlength="50" value="<?php echo $data['passw'] ?>" autofocus>
 
         <label>Role</label>
         <input type="text" name="role" class="form-control" placeholder="Role" maxlength="50" value="<?php echo $data['role'] ?>" autofocus>

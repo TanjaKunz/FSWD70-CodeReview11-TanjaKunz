@@ -2,10 +2,15 @@
 
 require_once 'actions/db_connect.php';
 
+if(isset($_SESSION['user']) != ""){
+  header('Location: home.php');
+  exit;
+}
+
 if ($_GET['id']) {
    $id = $_GET['id'];
 
-   $sql = "SELECT * FROM locations WHERE loc_id = {$id}";
+   $sql = "SELECT * FROM loc WHERE loc_id = {$id}";
    $result = $conn->query($sql);
    $data = $result->fetch_assoc();
 
@@ -38,7 +43,8 @@ if ($_GET['id']) {
 
    <input type="hidden" name="id" value="<?php echo $data['loc_id'] ?>" />
    <button class="btn btn-info" type="submit">Yes, delete it!</button >
-   <a href="homeAdmin.php"><button class="btn btn-outline-info" type="button">No, go back!</button ></a>
+   <a href="homeAdmin.php"><button class="btn btn-outline-info" type="button">No, go back to home!</button ></a>
+   <a href="adminPanel.php"><button class="btn btn-outline-info" type="button">No, go back to panel!</button ></a>
 </form>
 
 </body>

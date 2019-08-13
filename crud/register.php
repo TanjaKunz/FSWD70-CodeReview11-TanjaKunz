@@ -8,9 +8,9 @@ if(isset($_SESSION['user'])!="" ){
  header("Location: home.php" );
 }
 
-// if(isset($_SESSION['user'])!="" || isset($_SESSION['admin'])!=""){
-//  header("Location: home.php" );
-// }
+if(isset($_SESSION['admin'])!="" ){
+ header("Location: homeAdmin.php" );
+}
 
 $error = false;
 
@@ -118,10 +118,13 @@ $passw = htmlspecialchars($passw);
                         <a class="nav-link" href="places.php">Places</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="concert.php">Concert</a>
+                        <a class="nav-link" href="event.php">Events</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="restaurants.php">Restaurants</a>
+                        <a class="nav-link" href="restaurant.php">Restaurants</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="user.php">Update User</a>
                     </li>
                     <li>
                       <a class="nav-link" href="actions/a_logout.php?logout">Logout</a>

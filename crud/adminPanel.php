@@ -4,34 +4,23 @@ session_start();
 
 require_once 'actions/db_connect.php';
 
-if(!isset($_SESSION['user']) && !isset($_SESSION['admin'])){
-	header("Location: login.php");
-	exit;
-
-} if (isset($_SESSION['user'])) {
-  header("Location: user.php");
+if(!isset($_SESSION['user']) && !isset($_SESSION['admin'])) {
+ header("Location: login.php");
+ exit;
 }
 
-
-$query = mysqli_query($conn, "SELECT * FROM users WHERE user_id = ".$_SESSION['user']);
-$userRow = mysqli_fetch_array($query, MYSQLI_ASSOC);
-
-if ($_GET['id']) {
-   $id = $_GET['id'];
-
-   $sql = "SELECT * FROM users WHERE user_id = {$id}" ;
-   $result = $conn->query($sql);
-   $data = $result->fetch_assoc();
-
-   $conn->close();
+if(isset($_SESSION['user'])){
+  header("Location: home.php");
+  exit;
 }
+
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>Books</title>
+	<title>Travelmatic</title>
 
 	<!-- Bootstrap -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -75,7 +64,7 @@ if ($_GET['id']) {
                         <a class="nav-link" href="restaurant.php">Restaurants</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="user.php">Update User</a>
+                        <a class="nav-link" href="usersAdmin.php">Update User</a>
                     </li>
                     <li>
                       <a class="nav-link" href="actions/a_logout.php?logout">Logout</a>
@@ -86,65 +75,69 @@ if ($_GET['id']) {
       </header><!-- /header -->
 	<span id="message"></span>
 
-	<main class="container-fluid my-5" id="main">
+	<main class="container-fluid my-5" id="mainLoc">
     <div class="row d-flex justify-content-between">
-      <div class="col-1 h4 d-inline">Users</div>
+      <div class="col-1 h4 d-inline">Locations</div>
     </div>    
 
     <table class="table mt-3 pt-5">     
       <thead class="thead-dark">
         <tr>
-          <th>User ID</th>
-          <th>Name</th>
-          <th>Email</th>
-          <th>Password</th>
-          <th>Role</th>
-          <th></th>
+          <th scope="col-1">Location ID</th>
+          <th scope="col-2">Location Name</th>
+          <th scope="col-3">Description</th>
+          <th scope="col-2">Image</th>
+          <th scope="col-1">Type</th>
+          <th scope="col-1">Address</th>
+          <th scope="col-2"></th>
         </tr>
       </thead>
       <tbody>
       	<tr>
-      		<form action='actions/a_create.php' method="post" class="needs-validation" id="addUser">
+      		<form action='actions/a_createLoc.php' method="post" class="needs-validation" id="addLoc">
       			<td>
-      				<input type="text" class="form-control" disabled name="user_id" placeholder="auto" required id="user_id">
+      				<input type="text" class="form-control" disabled name="loc_id" placeholder="auto" id="loc_id">
       			</td>
             <td>
-              <input type="text" class="form-control" name="name" placeholder="Name" required id="name">
+              <input type="text" class="form-control" name="name" placeholder="Location Name" required id="name">
               <div class="invalid-feedback">Please enter the name.</div>
             </td>
       			<td>
-      				<input type="text" class="form-control" name="email" placeholder="Email" required id="email">
-      				<div class="invalid-feedback">Please enter an Email.</div>
+      				<input type="text" class="form-control" name="desc" placeholder="Description" required id="desc">
+      				<div class="invalid-feedback">Please enter a description.</div>
       			</td>
             <td>
-              <input type="password" name="passw" id="inputPassword" class="form-control" placeholder="Enter Password" maxlength="15">
-              <div class="invalid-feedback">Please enter a password.</div>
+              <input type="text" name="img" id="img" class="form-control" placeholder="Enter filename" maxlength="15" required>
+              <div class="invalid-feedback">Please enter the filename.</div>
             </td>
       			<td>
-      				<input type="text" class="form-control" name="role" placeholder="Role" required id="role">
-      				<div class="invalid-feedback">Please enter the role.</div>
+      				<input type="text" class="form-control" name="type" placeholder="Type" id="type">  		
       			</td>
+            <td>
+              <input type="text" class="form-control" name="addr" placeholder="Address" id="addr">     
+            </td>
       			<td>
-      				<button type="submit" class="btn btn-secondary" id="submit">Add User</button>
+      				<button type="submit" class="btn btn-secondary" name="addLoc">Add Loc</button>
       			</td>
       		</form>
       	</tr>
 
         <?php
-           $sql = "SELECT * FROM users";
+           $sql = "SELECT * FROM loc";
            $result = $conn->query($sql);
 
             if($result->num_rows > 0) {
               while($row = $result->fetch_assoc()) {
                  echo "<tr>
-                      <td name='".$row['user_id']."'>" .$row['user_id']."</td>
+                      <th scope='row' name='".$row['loc_id']."'>" .$row['loc_id']."</th>
                       <td>" .$row['name']."</td>
-                      <td>" .$row['email']."</td>
-                      <td>*****</td>
-                      <td>" .$row['role']."</td>                      
+                      <td>" .$row['description']."</td>
+                      <td>" .$row['image']."</td>
+                      <td>" .$row['loc_type']."</td>                      
+                      <td>" .$row['address']."</td>                      
                       <td>
-                      	<a href='updateUser.php?id=" .$row['user_id']."'><button type= 'button' class='btn btn-outline-secondary edit'><i class='fas fa-pencil-alt'></i></button></a>
-                        <a href='deleteUser.php?id=" .$row['user_id']."'><button type='button' class='btn btn-secondary delete'><i class='fas fa-times'></i></button></a>                        
+                      	<a href='update.php?id=" .$row['loc_id']."'><button type= 'button' class='btn btn-outline-secondary edit'><i class='fas fa-pencil-alt'></i></button></a>
+                        <a href='delete.php?id=" .$row['loc_id']."'><button type='button' class='btn btn-secondary delete'><i class='fas fa-times'></i></button></a>                        
                       </td>
                     </tr>" ;
               }
@@ -161,5 +154,3 @@ if ($_GET['id']) {
 </body>
 </html>
 <?php  ob_end_flush(); ?>
-
-

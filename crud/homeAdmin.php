@@ -4,26 +4,19 @@ session_start();
 
 require_once 'actions/db_connect.php';
 
-// if(!isset($_SESSION['user']) || !isset($_SESSION['admin'])) {
-//  header("Location: login.php");
-//  exit;
-// } elseif (isset($_SESSION['user'])){
-//   header("Location: home.php");
-//   exit;
-// }
+if(!isset($_SESSION['user']) && !isset($_SESSION['admin'])) {
+ header("Location: login.php");
+ exit;
+}
 
-$query = mysqli_query($conn, "SELECT * FROM users WHERE user_id =".$_SESSION['user']);
+if(isset($_SESSION['user'])){
+  header("Location: home.php");
+  exit;
+}
+
+$query = mysqli_query($conn, "SELECT * FROM users WHERE user_id =".$_SESSION['admin']);
 $user = mysqli_fetch_array($query, MYSQLI_ASSOC);
 
-if ($_GET['id']) {
-   $id = $_GET['id'];
-
-   $sql = "SELECT * FROM locations WHERE loc_id = {$id}" ;
-   $result = $conn->query($sql);
-   $data = $result->fetch_assoc();
-
-   $conn->close();
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -71,10 +64,16 @@ if ($_GET['id']) {
                         <a class="nav-link" href="places.php">Places</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="concert.php">Concert</a>
+                        <a class="nav-link" href="event.php">Event</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="restaurants.php">Restaurants</a>
+                        <a class="nav-link" href="restaurant.php">Restaurants</a>
+                    </li>
+                     <li class="nav-item">
+                        <a class="nav-link" href="adminPanel.php">Panel</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="usersAdmin.php">Update User</a>
                     </li>
                     <li>
                       <a class="nav-link" href="actions/a_logout.php?logout">Logout</a>
@@ -87,27 +86,20 @@ if ($_GET['id']) {
    
 
       <main role="main" class="container-fluid p-3">
-        <div class="text-right" id="status">Logged in as <?= $user['name']; ?></div>              
+        <div class="text-right mt-3" id="status">Logged in as <?= $user['name']; ?></div>              
         
         <div class="row mt-5">
           
 
           <?php
-           $sql = "SELECT locations.loc_id, locations.name, locations.description, locations.image, locations.loc_type, locations.loc_type, address.address, address.ZIP, address.city, address.state, restaurants.phone, restaurants.web, rest_type.rest_type, places.web, place_type.place_type, concerts.price, concerts.con_date, concerts.con_time, concerts.web FROM locations 
-            LEFT JOIN address ON locations.address = address.address_id
-            LEFT JOIN restaurants ON locations.loc_id = restaurants.loc_id
-            LEFT JOIN rest_type ON restaurants.rest_type = rest_type.rest_type_id
-            LEFT JOIN places ON locations.loc_id = places.loc_id
-            LEFT JOIN place_type ON places.place_type = place_type.place_type_id
-            LEFT JOIN concerts ON locations.loc_id = concerts.loc_id
-            ORDER BY locations.loc_type";
+           $sql = "SELECT * FROM loc ORDER BY loc.loc_type";
 
            $result = $conn->query($sql);
 
             if($result->num_rows > 0) {
               while($row = $result->fetch_assoc()) {
                 // variants of display depending on loc_type
-                if($row['loc_type'] == 2){
+                if($row['loc_type'] == 'place'){
                   echo "<div class='col-lg-3 col-md-6 col-sm-12 py-3 h5 d-flex flex-wrap box'>                  
                   <span class='d-none' name='".$row['loc_id']."'>".$row['loc_id']."</span>
                   <div class='col-lg-12 col-md-6 mb-3 p-0 d-none d-lg-block d-md-block img'>
@@ -127,7 +119,7 @@ if ($_GET['id']) {
                   <a href='delete.php?id=" .$row['loc_id']."'><button type='button' class='btn btn-secondary delete'>Delete</button></a>                    
                   </div>
                   </div>" ;
-                } elseif ($row['loc_type'] == 3){
+                } elseif ($row['loc_type'] == 'restaurant'){
                   echo "<div class='col-lg-3 col-md-6 col-sm-12 py-3 h5 d-flex flex-wrap box'>
                   <span class='d-none' name='".$row['loc_id']."'>".$row['loc_id']."</span>
                   <div class='col-lg-12 col-md-6 mb-3 p-0 d-none d-lg-block d-md-block img'>

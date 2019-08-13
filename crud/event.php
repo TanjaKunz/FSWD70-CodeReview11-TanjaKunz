@@ -4,13 +4,11 @@ session_start();
 
 require_once 'actions/db_connect.php';
 
-// if(!isset($_SESSION['user']) || !isset($_SESSION['admin'])) {
-//  header("Location: login.php");
-//  exit;
-// } elseif (isset($_SESSION['admin'])){
-//   header("Location: homeAdmin.php");
-//   exit;
-// }
+if(!isset($_SESSION['user']) && !isset($_SESSION['admin'])) {
+ header("Location: login.php");
+ exit;
+}
+
 
 $query = mysqli_query($conn, "SELECT * FROM users WHERE user_id =".$_SESSION['user']);
 $user = mysqli_fetch_array($query, MYSQLI_ASSOC);
@@ -71,10 +69,10 @@ if ($_GET['id']) {
                         <a class="nav-link" href="places.php">Places</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="concert.php">Concert</a>
+                        <a class="nav-link" href="event.php">Events</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="restaurants.php">Restaurants</a>
+                        <a class="nav-link" href="restaurant.php">Restaurants</a>
                     </li>
                     <li>
                       <a class="nav-link" href="actions/a_logout.php?logout">Logout</a>

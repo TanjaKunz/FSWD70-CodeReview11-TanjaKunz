@@ -7,7 +7,7 @@ if ($_POST) {
    $sql = "DELETE FROM users WHERE user_id = {$id}";
     if($conn->query($sql) === TRUE) {
        echo "<p>Successfully deleted!!</p>" ;
-       echo "<a href='../userAdmin.php'><button type='button'>Back</button></a>";
+       echo "<a href='../usersAdmin.php'><button type='button'>Back</button></a>";
    } else {
        echo "Error deleting record : " . $conn->error;
    }

@@ -2,18 +2,10 @@
 
 require_once 'actions/db_connect.php';
 
-// if(!isset($_SESSION['user']) || !isset($_SESSION['admin'])) {
-//  header("Location: login.php");
-//  exit;
-// } elseif (isset($_SESSION['user'])){
-//   header("Location: home.php");
-//   exit;
-// }
-
 if ($_GET['id']) {
    $id = $_GET['id'];
 
-   $sql = "SELECT * FROM locations WHERE loc_id = {$id}" ;
+   $sql = "SELECT * FROM loc WHERE loc_id = {$id}" ;
    $result = $conn->query($sql);
 
    $data = $result->fetch_assoc();
@@ -78,14 +70,21 @@ if ($_GET['id']) {
                         <a class="nav-link" href="home.php">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="create.php">Create</a>
+                        <a class="nav-link" href="places.php">Places</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="update.php">Update</a>
+                        <a class="nav-link" href="event.php">Event</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="restaurant.php">Restaurants</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="user.php">Update User</a>
                     </li>
                     <li>
                       <a class="nav-link" href="actions/a_logout.php?logout">Logout</a>
                     </li>
+                  </ul>
             </div>
         </nav>
          
@@ -97,24 +96,25 @@ if ($_GET['id']) {
         <h1 class="h3 mb-3 font-weight-normal">Update Location</h1>
 
         <label>Location Name</label>
-        <input type="text" name="loc_name" class="form-control" placeholder="Location Name" maxlength="50" value="<?php echo $data['name'] ?>" autofocus>
+        <input type="text" name="name" class="form-control" placeholder="Location Name" maxlength="50" value="<?php echo $data['name'] ?>" autofocus>
 
         <label>Description</label>
-        <input type="text" name="loc_desc" class="form-control" placeholder="Description" maxlength="50" value="<?php echo $data['description'] ?>" autofocus>
+        <input type="text" name="desc" class="form-control" placeholder="Description" maxlength="50" value="<?php echo $data['description'] ?>" autofocus>
 
         <label>Image</label>
-        <input type="text" name="loc_img" class="form-control" placeholder="Image (Filename)" maxlength="50" value="<?php echo $data['image'] ?>" autofocus>
+        <input type="text" name="img" class="form-control" placeholder="Image (Filename)" maxlength="50" value="<?php echo $data['image'] ?>" autofocus>
 
         <label>Type</label>
-        <input type="text" name="loc_type" class="form-control" placeholder="Location Type (1-3)" maxlength="50" value="<?php echo $data['loc_type'] ?>" autofocus>
+        <input type="text" name="type" class="form-control" placeholder="Location Type (1-3)" maxlength="50" value="<?php echo $data['loc_type'] ?>" autofocus>
 
         <label>Address ID</label>
-        <input type="text" name="address" class="form-control" placeholder="Address" maxlength="50" value="<?php echo $data['address'] ?>" autofocus>
+        <input type="text" name="addr" class="form-control" placeholder="Address" maxlength="50" value="<?php echo $data['address'] ?>" autofocus>
 
         <div class="mt-3">
           <input type= "hidden" name= "id" value= "<?php echo $data['loc_id']?>" />
           <button class="btn btn-outline-secondary" type="submit">Save Changes</button>
-          <a href="homeAdmin.php"><button class="btn btn-secondary" type="button" >Back</button></a>
+          <a href="homeAdmin.php"><button class="btn btn-secondary" type="button" >Back to home</button></a>
+          <a href="adminPanel.php"><button class="btn btn-secondary" type="button" >Back to panel</button></a>
         </div>      
       </form>
       </fieldset>
